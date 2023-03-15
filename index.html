@@ -39,7 +39,7 @@
                   <input class="form-control form-control-sm assessment-total" type="number" id="assessment-total-1" min="1">
                   <br>
                   <label for="assessment-score-1">Your task score</label>
-                  <input class="form-control form-control-sm assessment-score" type="number" id="assessment-score-1" min="0" max="assessment-total-1">
+                  <input class="form-control form-control-sm assessment-score" type="number" id="assessment-score-1" min="0">
                   <br>
                 </div>
               </div>
@@ -54,7 +54,7 @@
                   <input class="form-control form-control-sm quiz-total" type="number" id="quiz-total-1" min="1">
                   <br>
                   <label for="quiz-score-1">Your quiz score</label>
-                  <input class="form-control form-control-sm quiz-score" type="number" id="quiz-score-1" min="0" max="quiz-total-1">
+                  <input class="form-control form-control-sm quiz-score" type="number" id="quiz-score-1" min="0" >
                   <br>
                 </div>
               </div>
@@ -122,77 +122,90 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
-      let assessmentTaskCount = 1;
-      let quizCount = 1;
+    let assessmentTaskCount = 1;
+    let quizCount = 1;
 
-      function addAssessmentTask() {
-        assessmentTaskCount++;
-        const newAssessmentTask = `
-    <div class="assessment-task">
-        <label for="assessment-total-${assessmentTaskCount}">Perfect assessment task score:</label>
-        <input class="form-control form-control-sm" type="number" class="assessment-total" id="assessment-total-${assessmentTaskCount}" min="1">
-            <br>
-                <label for="assessment-score-${assessmentTaskCount}">Your task score:</label>
-                <input class="form-control form-control-sm" type="number" class="assessment-score" id="assessment-score-${assessmentTaskCount}" min="0" max="assessment-total-${assessmentTaskCount}">
-                    <br>
-                    </div>
-          `;
-        const assessmentTaskContainer = document.getElementById('assessment-task-container');
-        assessmentTaskContainer.insertAdjacentHTML('beforeend', newAssessmentTask);
-      }
-
-      function addQuiz() {
-        quizCount++;
-        const newQuiz = `
+    function addAssessmentTask() {
+      assessmentTaskCount++;
+      const newAssessmentTask = `
+        <div class="assessment-task">
+          <label for="assessment-total-${assessmentTaskCount}">Perfect assessment task score:</label>
+          <input class="form-control form-control-sm assessment-total" type="number" id="assessment-total-${assessmentTaskCount}" min="1">
+          <br>
+          <label for="assessment-score-${assessmentTaskCount}">Your task score:</label>
+          <input class="form-control form-control-sm assessment-score" type="number" id="assessment-score-${assessmentTaskCount}" min="0">
+          <br>
+        </div>
+      `;
+      const assessmentTaskContainer = document.getElementById('assessment-task-container');
+      assessmentTaskContainer.insertAdjacentHTML('beforeend', newAssessmentTask);
+    }
+    
+    function addQuiz() {
+      quizCount++;
+      const newQuiz = `
         <div class="quiz">
-            <label for="quiz-total-${quizCount}">Perfect quiz score:</label>
-            <input class="form-control form-control-sm" type="number" class="quiz-total" id="quiz-total-${quizCount}" min="1">
-                <br>
-                    <label for="quiz-score-${quizCount}">Your quiz score:</label>
-                    <input class="form-control form-control-sm" type="number" class="quiz-score" id="quiz-score-${quizCount}" min="0" max="quiz-total-${quizCount}">
-                        <br>
-                        </div>
-          `;
-        const quizContainer = document.getElementById('quiz-container');
-        quizContainer.insertAdjacentHTML('beforeend', newQuiz);
-      }
+          <label for="quiz-total-${quizCount}">Perfect quiz score:</label>
+          <input class="form-control form-control-sm quiz-total" type="number" id="quiz-total-${quizCount}" min="1">
+          <br>
+          <label for="quiz-score-${quizCount}">Your quiz score:</label>
+          <input class="form-control form-control-sm quiz-score" type="number" id="quiz-score-${quizCount}" min="0">
+          <br>
+        </div>
+      `;
+      const quizContainer = document.getElementById('quiz-container');
+      quizContainer.insertAdjacentHTML('beforeend', newQuiz);
+    }
 
-      function calculateGrade() {
-        const attendanceTotal = Number(document.getElementById('attendance-total').value);
-        const attendanceScore = Number(document.getElementById('attendance-score').value);
-        let assessmentTotal = 0;
-        let assessmentScore = 0;
-        const assessmentTotals = document.querySelectorAll('.assessment-total');
-        const assessmentScores = document.querySelectorAll('.assessment-score');
-        for (let i = 0; i < assessmentTotals.length; i++) {
-          assessmentTotal += Number(assessmentTotals[i].value);
-          assessmentScore += Number(assessmentScores[i].value);
-        }
-        let quizTotal = 0;
-        let quizScore = 0;
-        const quizTotals = document.querySelectorAll('.quiz-total');
-        const quizScores = document.querySelectorAll('.quiz-score');
-        for (let i = 0; i < quizTotals.length; i++) {
-          quizTotal += Number(quizTotals[i].value);
-          quizScore += Number(quizScores[i].value);
-        }
-        const examTotal = Number(document.getElementById('exam-total').value);
-        const examScore = Number(document.getElementById('exam-score').value);
-        const attendanceWeight = 0.05;
-        const assessmentWeight = 0.15;
-        const quizWeight = 0.4667;
-        const examWeight = 0.3333;
-        const totalWeight = attendanceWeight + assessmentWeight + quizWeight + examWeight;
-        const attendanceGrade = attendanceScore / attendanceTotal * attendanceWeight;
-        const assessmentGrade = assessmentScore / assessmentTotal * assessmentWeight;
-        const quizGrade = quizScore / quizTotal * quizWeight;
-        const examGrade = examScore / examTotal * examWeight;
-        const finalGrade = (attendanceGrade + assessmentGrade + quizGrade + examGrade) / totalWeight * 100;
-        document.getElementById('grade-display').innerHTML = finalGrade.toFixed(2);
-        // Show modal
-        var modal = new bootstrap.Modal(document.getElementById("save-score-modal"));
-        modal.show();
-        clearInputs();
+    function calculateGrade() {
+      const attendanceTotal = Number(document.getElementById('attendance-total').value);
+      const attendanceScore = Number(document.getElementById('attendance-score').value);
+      const attendanceGrade = ((attendanceScore / attendanceTotal) * 60) + 40;
+      const finalAttendanceGrade = attendanceGrade * 0.05;
+
+      let assessmentTotal = 0;
+      let assessmentScore = 0;
+      const assessmentTotals = document.querySelectorAll('.assessment-total');
+      const assessmentScores = document.querySelectorAll('.assessment-score');
+      for (let i = 0; i < assessmentTotals.length; i++) {
+        assessmentTotal += Number(assessmentTotals[i].value);
+        assessmentScore += Number(assessmentScores[i].value);
+      }
+      const assessmentGrade = ((assessmentScore / assessmentTotal) * 60) + 40;
+      const finalAssessmentGrade = assessmentGrade * 0.15;
+
+      let quizTotal = 0;
+      let quizScore = 0;
+      const quizTotals = document.querySelectorAll('.quiz-total');
+      const quizScores = document.querySelectorAll('.quiz-score');
+      for (let i = 0; i < quizTotals.length; i++) {
+        quizTotal += Number(quizTotals[i].value);
+        quizScore += Number(quizScores[i].value);
+      }
+      const quizGrade = ((quizScore / quizTotal) * 60) + 40;
+      const finalQuizGrade = quizGrade * 0.4667;
+
+      const examTotal = Number(document.getElementById('exam-total').value);
+      const examScore = Number(document.getElementById('exam-score').value);
+      const examGrade = (examScore / examTotal * 60) + 40;
+      const finalExamGrade = examGrade * 0.3333;
+
+
+      console.log("attendace " + finalAttendanceGrade)
+      console.log("assessment " + finalAssessmentGrade)
+      console.log("quiz " + finalQuizGrade)
+      console.log("exam " + finalExamGrade)
+
+      const totalGrade = finalAttendanceGrade + finalAssessmentGrade + finalQuizGrade + finalExamGrade;
+
+      console.log("total" + totalGrade)
+
+      document.getElementById('grade-display').innerHTML = totalGrade.toFixed(2);
+
+      // Show modal
+      var modal = new bootstrap.Modal(document.getElementById("save-score-modal"));
+      modal.show();
+      clearInputs();
       }
 
       function clearInputs() {

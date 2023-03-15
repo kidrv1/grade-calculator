@@ -300,7 +300,14 @@
       const clearBtn = document.getElementById('clear-btn');
 
       clearBtn.addEventListener('click', () => {
-        localStorage.clear();
+        // Code to clear scores from local storage
+        localStorage.removeItem('savedScores');
+        // Code to update UI to show that there are no saved scores
+        const savedScoresTable = document.querySelector('#saved-scores-card table tbody');
+        savedScoresTable.innerHTML = '';
+        const noSavedScoresMsg = document.createElement('p');
+        noSavedScoresMsg.innerText = 'No saved scores';
+        savedScoresTable.appendChild(noSavedScoresMsg);
       });
     </script>
   </body>

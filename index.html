@@ -82,9 +82,23 @@
       <div class="col-6 m-1">
         <div class="card">
           <div class="card-body">
-            <h5>Saved scores</h5>
-            <div id="saved-scores-card"></div>
-          </div>
+            <div class="d-flex">
+              <div><h5>Saved scores</h5></div>
+              <div class="ms-auto"><button class="btn btn-dark btn-sm" id="clear-btn">Clear scores</button></div>
+            </div>
+            <div id="saved-scores-card" class="pt-3">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Grade</th>
+                    <th scope="col"></th>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
         </div>
       </div>
       <div class="modal" tabindex="-1" role="dialog" id="save-score-modal">
@@ -211,16 +225,34 @@
 
       function displaySavedScores() {
         const savedScores = JSON.parse(localStorage.getItem('savedScores') || '[]');
-        const savedScoresContainer = document.getElementById('saved-scores-card');
-        savedScoresContainer.innerHTML = '';
-        savedScores.forEach((score) => {
-          const scoreElement = document.createElement('div');
-          scoreElement.classList.add('saved-score');
-          scoreElement.innerHTML = `
-																																						<strong>${score.title}:</strong> ${score.grade}`;
-          savedScoresContainer.appendChild(scoreElement);
-        });
+        const savedScoresTable = document.querySelector('#saved-scores-card table tbody');
+        savedScoresTable.innerHTML = '';
+
+        if (savedScores.length > 0) {
+          savedScores.forEach((score, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${score.title}</td>
+              <td>${score.grade}</td>
+              <td><button class="btn btn-danger btn-sm" data-index="${index}">Delete</button></td>
+            `;
+            savedScoresTable.appendChild(row);
+
+            // Add event listener to delete button
+            const deleteButton = row.querySelector('button');
+            deleteButton.addEventListener('click', (event) => {
+              const indexToDelete = event.target.getAttribute('data-index');
+              savedScores.splice(indexToDelete, 1);
+              localStorage.setItem('savedScores', JSON.stringify(savedScores));
+              displaySavedScores();
+            });
+          });
+        } else {
+          savedScoresTable.innerHTML = '<tr><td colspan="3">No saved scores</td></tr>';
+        }
       }
+
+
       // Call the function on page load
       displaySavedScores();
       const inputs = document.querySelectorAll('form input');
@@ -264,6 +296,12 @@
         })
         toast.show()
       }
+
+      const clearBtn = document.getElementById('clear-btn');
+
+      clearBtn.addEventListener('click', () => {
+        localStorage.clear();
+      });
     </script>
   </body>
 </html>

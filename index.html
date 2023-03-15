@@ -190,15 +190,7 @@
       const examGrade = (examScore / examTotal * 60) + 40;
       const finalExamGrade = examGrade * 0.3333;
 
-
-      console.log("attendace " + finalAttendanceGrade)
-      console.log("assessment " + finalAssessmentGrade)
-      console.log("quiz " + finalQuizGrade)
-      console.log("exam " + finalExamGrade)
-
       const totalGrade = finalAttendanceGrade + finalAssessmentGrade + finalQuizGrade + finalExamGrade;
-
-      console.log("total" + totalGrade)
 
       document.getElementById('grade-display').innerHTML = totalGrade.toFixed(2);
 

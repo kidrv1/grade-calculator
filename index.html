@@ -8,18 +8,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="bootstrap.css" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Grade Calculator</title>
   </head>
+  <style>
+    .modal {
+    z-index: 9999;
+  }
+  </style>
   <body class="background-color">
-    <nav class="navbar navbar-light bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary">
       <div class="container-fluid">
-        <a class="navbar-brand fw-bold text-white" href="#">
-          <img src="logo2.png" alt="" width="30" height="24" class="d-inline-block align-text-top"> Grade Calculator </a>
+        <a class="navbar-brand text-white" href="index.html"><img src="logo2.png" alt="" width="30" height="24" class="d-inline-block align-text-top"> Grade Calculator</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="rle.html">RLE Subject</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
-    <div class="container pt-3 d-flex justify-content-center">
-      <div class="col-6 m-3">
-        <div class="card shadow">
+    <div class="container p-5">
+      <div class="row">
+      <div class="col-md-6 col-xs-12 mb-1">
+        <div class="card bg-primary text-white shadow">
           <div class="card-body">
             <form>
               <div class="mb-2">
@@ -43,7 +62,7 @@
                   <br>
                 </div>
               </div>
-              <button class="btn btn-primary btn-sm" type="button" onclick="addAssessmentTask()">Add more task</button>
+              <button class="btn btn-light btn-sm" type="button" onclick="addAssessmentTask()">Add more task</button>
               <br>
               <br>
               <hr>
@@ -58,7 +77,7 @@
                   <br>
                 </div>
               </div>
-              <button class="btn btn-primary btn-sm" type="button" onclick="addQuiz()">Add more quiz</button>
+              <button class="btn btn-light btn-sm" type="button" onclick="addQuiz()">Add more quiz</button>
               <br>
               <br>
               <hr>
@@ -72,22 +91,22 @@
                 <br>
               </div>
               <div class="text-center">
-                <button id="calculateBtn" class="btn btn-primary btn-sm m-1" type="button" onclick="calculateGrade()" disabled>Calculate Grade</button>
+                <button id="calculateBtn" class="btn btn-light btn-sm m-1" type="button" onclick="calculateGrade()">Calculate Grade</button>
                 <button class="btn btn-dark btn-sm m-1" type="button" onclick="clearInputs()">Clear</button>
               </div>
             </form>
           </div>
         </div>
       </div>
-      <div class="col-6 m-3">
-        <div class="card shadow">
+      <div class="col-md-6 col-xs-12">
+        <div class="card bg-primary text-white shadow">
           <div class="card-body">
             <div class="d-flex">
               <div><h5>Saved scores</h5></div>
               <div class="ms-auto"><button class="btn btn-dark btn-sm" id="clear-btn">Clear scores</button></div>
             </div>
             <div id="saved-scores-card" class="pt-3">
-              <table class="table table-bordered">
+              <table class="table table-bordered text-white">
                 <thead>
                   <tr>
                     <th scope="col">Subject</th>
@@ -101,10 +120,13 @@
             </div>
         </div>
       </div>
+    </div>
+    </div>
+
       <div class="modal" tabindex="-1" role="dialog" id="save-score-modal">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header bg-primary text-white">
               <h5 class="modal-title">Save Score?</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -125,7 +147,7 @@
           </div>
         </div>
       </div>
-    </div>
+    
     <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
       <div id="toast" class="toast align-items-center text-white bg-primary border-0" role="alert" aria-live="assertive" aria-atomic="true">
         <div class="d-flex">
@@ -134,6 +156,7 @@
         </div>
       </div>
     </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script>
     let assessmentTaskCount = 1;
@@ -224,7 +247,7 @@
 
         // Set the quiz-container and assessment-container to their original HTML code
         const quizContainer = document.getElementById("quiz-container");
-        const assessmentContainer = document.getElementById("assessment-container");
+        const assessmentContainer = document.getElementById("assessment-task-container");
 
         quizContainer.innerHTML = `
           <div class="quiz">
@@ -260,12 +283,70 @@
             row.innerHTML = `
               <td>${score.title}</td>
               <td>${score.grade}</td>
-              <td><button class="btn btn-primary btn-sm" data-index="${index}">Delete</button></td>
+              <td>
+                <button class="btn btn-light btn-sm edit-btn" data-index="${index}">Edit</button>
+                <button class="btn btn-light btn-sm delete-btn" data-index="${index}">Delete</button>
+              </td>
             `;
             savedScoresTable.appendChild(row);
 
+            // Add event listener to edit button
+            const editButton = row.querySelectorAll('.edit-btn')[0];
+            editButton.addEventListener('click', (event) => {
+              const indexToEdit = event.target.getAttribute('data-index');
+              const scoreToEdit = savedScores[indexToEdit];
+              const modal = document.createElement('div');
+              modal.classList.add('modal', 'fade');
+              modal.innerHTML = `
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header bg-primary text-white">
+                      <h5 class="modal-title">Edit Score</h5>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+                        <div class="mb-3">
+                          <label for="subject-input" class="form-label">Subject</label>
+                          <input type="text" class="form-control" id="subject-input">
+                        </div>
+                        <div class="mb-3">
+                          <label for="grade-input" class="form-label">Grade</label>
+                          <input type="text" class="form-control" id="grade-input">
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary save-btn">Save changes</button>
+                    </div>
+                  </div>
+                </div>
+              `;
+              document.body.appendChild(modal);
+              const subjectInput = modal.querySelector('#subject-input');
+              const gradeInput = modal.querySelector('#grade-input');
+              subjectInput.value = scoreToEdit.title;
+              gradeInput.value = scoreToEdit.grade;
+              modal.setAttribute('data-index', indexToEdit);
+
+              // Show the modal using Bootstrap Modal class
+              const modalInstance = new bootstrap.Modal(modal);
+              modalInstance.show();
+
+              const saveButton = modal.querySelector('.save-btn');
+              saveButton.addEventListener('click', () => {
+                const indexToEdit = modal.getAttribute('data-index');
+                savedScores[indexToEdit].title = subjectInput.value;
+                savedScores[indexToEdit].grade = gradeInput.value;
+                localStorage.setItem('savedScores', JSON.stringify(savedScores));
+                modalInstance.hide();
+                displaySavedScores();
+              });
+            });
+
             // Add event listener to delete button
-            const deleteButton = row.querySelector('button');
+            const deleteButton = row.querySelectorAll('.delete-btn')[0];
             deleteButton.addEventListener('click', (event) => {
               const indexToDelete = event.target.getAttribute('data-index');
               savedScores.splice(indexToDelete, 1);
@@ -281,14 +362,8 @@
 
       // Call the function on page load
       displaySavedScores();
-      const inputs = document.querySelectorAll('form input');
-      const calculateBtn = document.getElementById('calculateBtn');
-      inputs.forEach(input => {
-        input.addEventListener('input', () => {
-          const isEmpty = [...inputs].some(input => !input.value);
-          calculateBtn.disabled = isEmpty;
-        });
-      });
+
+      
       const scoreTitleInput = document.getElementById('score-title');
       const saveScoreBtn = document.getElementById('saveScoreBtn');
       scoreTitleInput.addEventListener('input', () => {

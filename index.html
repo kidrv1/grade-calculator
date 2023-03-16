@@ -10,16 +10,16 @@
     <link rel="icon" type="image/x-icon" href="logo.png">
     <title>Grade Calculator</title>
   </head>
-  <body>
-    <nav class="navbar navbar-light bg-light">
+  <body class="background-color">
+    <nav class="navbar navbar-light bg-primary">
       <div class="container-fluid">
-        <a class="navbar-brand fw-bold" href="#">
-          <img src="logo.png" alt="" width="30" height="24" class="d-inline-block align-text-top"> Grade Calculator </a>
+        <a class="navbar-brand fw-bold text-white" href="#">
+          <img src="logo2.png" alt="" width="30" height="24" class="d-inline-block align-text-top"> Grade Calculator </a>
       </div>
     </nav>
     <div class="container pt-3 d-flex justify-content-center">
-      <div class="col-6 m-1">
-        <div class="card">
+      <div class="col-6 m-3">
+        <div class="card shadow">
           <div class="card-body">
             <form>
               <div class="mb-2">
@@ -79,8 +79,8 @@
           </div>
         </div>
       </div>
-      <div class="col-6 m-1">
-        <div class="card">
+      <div class="col-6 m-3">
+        <div class="card shadow">
           <div class="card-body">
             <div class="d-flex">
               <div><h5>Saved scores</h5></div>
@@ -221,6 +221,32 @@
         inputs.forEach((input) => {
           input.value = "";
         });
+
+        // Set the quiz-container and assessment-container to their original HTML code
+        const quizContainer = document.getElementById("quiz-container");
+        const assessmentContainer = document.getElementById("assessment-container");
+
+        quizContainer.innerHTML = `
+          <div class="quiz">
+            <label for="quiz-total-1">Perfect quiz score:</label>
+            <input class="form-control form-control-sm quiz-total" type="number" id="quiz-total-1" min="1">
+            <br>
+            <label for="quiz-score-1">Your quiz score:</label>
+            <input class="form-control form-control-sm quiz-score" type="number" id="quiz-score-1" min="0">
+            <br>
+          </div>
+        `;
+
+        assessmentContainer.innerHTML = `
+          <div class="assessment">
+            <label for="assessment-total-1">Perfect score:</label>
+            <input class="form-control form-control-sm assessment-total" type="number" id="assessment-total-1" min="1">
+            <br>
+            <label for="assessment-score-1">Your score:</label>
+            <input class="form-control form-control-sm assessment-score" type="number" id="assessment-score-1" min="0">
+            <br>
+          </div>
+        `;
       }
 
       function displaySavedScores() {

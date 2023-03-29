@@ -21,13 +21,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link" href="#">Home</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="rle.html">RLE Subject</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="minor.html">Minor Subjects</a>
+              <a class="nav-link active" aria-current="page" href="minor.html">Minor Subjects</a>
             </li>
           </ul>
         </div>
@@ -196,7 +196,7 @@
     function calculateGrade() {
       const attendanceTotal = Number(document.getElementById('attendance-total').value);
       const attendanceScore = Number(document.getElementById('attendance-score').value);
-      const attendanceGrade = ((attendanceScore / attendanceTotal) * 60) + 40;
+      const attendanceGrade = ((attendanceScore / attendanceTotal) * 50) + 50;
       const finalAttendanceGrade = attendanceGrade * 0.05;
 
       let assessmentTotal = 0;
@@ -207,7 +207,7 @@
         assessmentTotal += Number(assessmentTotals[i].value);
         assessmentScore += Number(assessmentScores[i].value);
       }
-      const assessmentGrade = ((assessmentScore / assessmentTotal) * 60) + 40;
+      const assessmentGrade = ((assessmentScore / assessmentTotal) * 50) + 50;
       const finalAssessmentGrade = assessmentGrade * 0.15;
 
       let quizTotal = 0;
@@ -218,12 +218,12 @@
         quizTotal += Number(quizTotals[i].value);
         quizScore += Number(quizScores[i].value);
       }
-      const quizGrade = ((quizScore / quizTotal) * 60) + 40;
+      const quizGrade = ((quizScore / quizTotal) * 50) + 50;
       const finalQuizGrade = quizGrade * 0.4667;
 
       const examTotal = Number(document.getElementById('exam-total').value);
       const examScore = Number(document.getElementById('exam-score').value);
-      const examGrade = (examScore / examTotal * 60) + 40;
+      const examGrade = (examScore / examTotal * 50) + 50;
       const finalExamGrade = examGrade * 0.3333;
 
       const totalGrade = finalAttendanceGrade + finalAssessmentGrade + finalQuizGrade + finalExamGrade;
@@ -272,7 +272,7 @@
       }
 
       function displaySavedScores() {
-        const savedScores = JSON.parse(localStorage.getItem('savedScores') || '[]');
+        const savedScores = JSON.parse(localStorage.getItem('savedScoresMinor') || '[]');
         const savedScoresTable = document.querySelector('#saved-scores-card table tbody');
         savedScoresTable.innerHTML = '';
 
@@ -338,7 +338,7 @@
                 const indexToEdit = modal.getAttribute('data-index');
                 savedScores[indexToEdit].title = subjectInput.value;
                 savedScores[indexToEdit].grade = gradeInput.value;
-                localStorage.setItem('savedScores', JSON.stringify(savedScores));
+                localStorage.setItem('savedScoresMinor', JSON.stringify(savedScores));
                 modalInstance.hide();
                 displaySavedScores();
               });
@@ -349,7 +349,7 @@
             deleteButton.addEventListener('click', (event) => {
               const indexToDelete = event.target.getAttribute('data-index');
               savedScores.splice(indexToDelete, 1);
-              localStorage.setItem('savedScores', JSON.stringify(savedScores));
+              localStorage.setItem('savedScoresMinor', JSON.stringify(savedScores));
               displaySavedScores();
             });
           });

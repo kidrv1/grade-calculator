@@ -380,12 +380,12 @@
           alert('Please enter a title for your score.');
           return;
         }
-        const savedScores = JSON.parse(localStorage.getItem('savedScores') || '[]');
+        const savedScores = JSON.parse(localStorage.getItem('savedScoresMinor') || '[]');
         savedScores.push({
           title: scoreTitle,
           grade: finalGrade
         });
-        localStorage.setItem('savedScores', JSON.stringify(savedScores));
+        localStorage.setItem('savedScoresMinor', JSON.stringify(savedScores));
         document.getElementById('score-title').value = '';
         // Update the saved scores display
         displaySavedScores();
@@ -401,7 +401,7 @@
 
       clearBtn.addEventListener('click', () => {
         // Code to clear scores from local storage
-        localStorage.removeItem('savedScores');
+        localStorage.removeItem('savedScoresMinor');
         // Code to update UI to show that there are no saved scores
         const savedScoresTable = document.querySelector('#saved-scores-card table tbody');
         savedScoresTable.innerHTML = '';
